@@ -2,7 +2,9 @@ const express = require("express")
 const mongoose = require("mongoose")
 const cors = require("cors")
 require("dotenv").config()
-const { sendResponseMiddleware } = require("./src/middlewares/helper.js")
+const { sendResponseMiddleware } = require("./src/middlewares/helpers")
+const router = require("./src/routes")
+
 const PORT = process.env.PORT || 3000
 const app = express()
 
@@ -11,7 +13,7 @@ app.use(cors({
 }))
 app.use(express.json())
 app.use(sendResponseMiddleware)
-
+app.use(router)
 
 mongoose.connect(process.env.MONGODB_URL)
 mongoose.connection.on("error", (error) => {
