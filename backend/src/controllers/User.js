@@ -4,6 +4,7 @@ const { generateJWT, verifyJWT } = require("../utils")
 const createUser = async (req, res) => {
     try{
         const { name, email, password } = req.body
+
         const isExists = await User.findOne({ email })
         if (isExists) {
             return res.sendResponse({ message: "Sorry!, An account exists with this email address"}, 400)
@@ -16,7 +17,8 @@ const createUser = async (req, res) => {
         user.setPassword(password)
         await user.save()
         const token = generateJWT(user.userId)
-        return res.sendResponse({ message: "Your account has been created successfully", ...token }, 201)
+        res.sendResponse({ message: "Your account has been created successfully", ...token }, 201)
+
     } catch(error){
         res.sendResponse({ message: error.message }, 400)
     }
@@ -27,6 +29,7 @@ const createUser = async (req, res) => {
 const loginUser = async (req, res) => {
     try{
         const { email, password } = req.body
+
         const user = await User.findOne({ email })
         if (!user) {
             return res.sendResponse({ message: "Invalid email or password" }, 401)
@@ -35,7 +38,8 @@ const loginUser = async (req, res) => {
             return res.sendResponse({ message: "Invalid email or password" }, 401)
         }
         const token = generateJWT(user.userId)
-        return res.sendResponse({ message: "Login successfull", ...token }) 
+        res.sendResponse({ message: "Login successfull", ...token })
+    
     } catch(error){
         res.sendResponse({ message: error.message }, 400)
     }
@@ -49,7 +53,7 @@ const reGenerateAuthToken = (req, res) => {
         return res.sendResponse({ message: "Invalid refresh token" }, 401)
     }
     const token = generateJWT(data.userId)
-    return res.sendResponse({ ...token })
+    res.sendResponse({ ...token })
 }
 
 

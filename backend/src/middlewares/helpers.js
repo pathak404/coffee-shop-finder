@@ -1,6 +1,6 @@
 const jwt = require('jsonwebtoken')
 
-const sendResponseMiddleware = (_req, res, next)=> {
+const sendResponseMiddleware = (_req, res, next) => {
     res.sendResponse = (data, statusCode = 200) => {
         res.status(statusCode).json({
             status: statusCode >= 200 && statusCode <= 299 ? true : false,
@@ -10,16 +10,20 @@ const sendResponseMiddleware = (_req, res, next)=> {
     next()
 }
 
-const jwtMiddleware = (req, _res, next) => {
+const jwtMiddleware = (req, res, next) => {
     if(req.headers.authorization){
         let token = req.headers.authorization.split(' ')[1]
-        let data = jwt.verify(token, process.env.JWT_SECRET)
-        if(data){
-            req.userId = data.userId
-            next()
+        try{
+            let data = jwt.verify(token, process.env.JWT_SECRET)
+            if(data){
+                req.userId = data.userId
+                return next()
+            }
+        } catch(err){
+            console.log(err)
         }
     }
-    return res.sendResponse({message: 'Unauthorized'}, 401)
+    res.sendResponse({message: 'Unauthorized'}, 401)
 }
 
 const validate = (schema) => {

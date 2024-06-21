@@ -1,8 +1,8 @@
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
+const { generateRandomString } = require('../utils')
 
 const userSchema = new mongoose.Schema({
-    // _id: mongoose.Schema.Types.ObjectId,
     userId: {
         type: mongoose.Schema.Types.String,
         required: true,
@@ -35,7 +35,7 @@ userSchema.pre("validate", function(next){
 })
 
 userSchema.methods.createUserId = function(){
-    this.userId = 'USR'+(new Date()).getTime()
+    this.userId = 'USR'+ generateRandomString(5) + Date.now()
 }
 
 userSchema.methods.setPassword = function(password){
