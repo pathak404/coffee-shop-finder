@@ -47,6 +47,13 @@ const orderSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Date,
         default: Date.now
     }
+}, {
+    toObject: {
+        transform: function(_doc, ret) {
+            delete ret._id
+            delete ret.__v
+        }
+    }
 })
 
 orderSchema.pre("validate", function(next){

@@ -1,6 +1,6 @@
 const Joi = require('joi');
 
-const newOrderValidator = Joi.object({
+const newOrderSchema = Joi.object({
     storeId: Joi.string().required(),
     items: Joi.array().items(Joi.object({
         itemId: Joi.string().required(),
@@ -18,12 +18,12 @@ const newOrderValidator = Joi.object({
     }, 'Amount validation'),
 })
 
-const verifyPaymentValidator = Joi.object({
+const verifyPaymentSchema = Joi.object({
     razorpayPaymentId: Joi.string().required(),
     razorpayOrderId: Joi.string().required(),
 });
 
 module.exports = {
-    newOrderValidator,
-    verifyPaymentValidator,
+    newOrderSchema,
+    verifyPaymentSchema,
 };

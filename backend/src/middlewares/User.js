@@ -1,12 +1,12 @@
 const Joi = require('joi');
 
-const loginValidator = Joi.object({
+const loginSchema = Joi.object({
     email: Joi.string().email().lowercase().required(),
     password: Joi.string().min(8).required(),
 })
 
 
-const newUserValidator = Joi.object({
+const newUserSchema = Joi.object({
     email: Joi.string().email().lowercase().required(),
     password: Joi.string().min(8).required(),
     confirmPassword: Joi.string().valid(Joi.ref('password')).required().messages({ 'any.only': 'Passwords do not match' }),
@@ -14,6 +14,6 @@ const newUserValidator = Joi.object({
 })
 
 module.exports = {
-    loginValidator,
-    newUserValidator,
+    loginSchema,
+    newUserSchema,
 }

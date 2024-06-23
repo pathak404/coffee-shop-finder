@@ -27,7 +27,7 @@ const createOrder = async (req, res) => {
 
     order.razorpayOrderId = response.id
     await order.save()
-    res.sendResponse({message: "Order created successfully", razorpayOrderId: response.id})
+    res.sendResponse({message: "Order created successfully", data: {...order.toObject()} })
 
   } catch (error) {
     res.sendResponse({message: error.message ?? error?.error?.description}, 500)
@@ -53,7 +53,7 @@ const verifyPayment = async (req, res) => {
       order.razorpayPaymentId = payment.id
       order.paymentStatus = payment.status
       await order.save()
-      return res.sendResponse({message: "Payment verified successfully", orderId: order.orderId})
+      return res.sendResponse({message: "Payment verified successfully", data: {...order.toObject()} })
     }
     res.sendResponse({message: "Payment failed"}, 400)
 
@@ -65,20 +65,20 @@ const verifyPayment = async (req, res) => {
 
 const getOrders = async (req, res) => {
   try {
-    const orders = await Order.find({userId: req.userId}).sort({createdAt: -1})
-    res.sendResponse({orders, message: "Orders fetched successfully"})
+    const orders = await Order.find({userId: req.userId}, { _id: 0, __v: 0 }).sort({createdAt: -1}).lean()
+    res.sendResponse({data: {...orders}, message: "Orders fetched successfully"})
   } catch (error) {
     res.sendResponse({message: error.message}, 500)
   }
 }
 
-const getOrder = async (req, res) => {
+const getOrderById = async (req, res) => {
   try {
     const order = await Order.findOne({orderId: req.params.orderId})
     if(!order){
       return res.sendResponse({message: "Invalid orderId"}, 400)
     }
-    res.sendResponse({order, message: "Order fetched successfully"})
+    res.sendResponse({data: {...order.toObject()}, message: "Order fetched successfully"})
   } catch (error) {
     res.sendResponse({message: error.message}, 500)
   }
@@ -88,5 +88,5 @@ module.exports = {
   createOrder,
   verifyPayment,
   getOrders,
-  getOrder,
+  getOrderById,
 }

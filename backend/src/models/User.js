@@ -25,6 +25,14 @@ const userSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     }
+}, {
+    toObject: {
+        transform: function(_doc, ret){
+            delete ret._id
+            delete ret.__v
+            delete ret.password
+        }
+    }
 })
 
 userSchema.pre("validate", function(next){
