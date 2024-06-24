@@ -13,6 +13,11 @@ const { storeSchema } = require('./middlewares/Store')
 const { newItemSchema, updateItemSchema } = require('./middlewares/StoreItem')
 const { getAllStoreItems, getStoreItemById, createStoreItem, updateStoreItem, deleteStoreItem } = require('./controllers/StoreItem')
 
+const { addToWishlist, removeFromWishlist, getWishlist } = require('./controllers/Wishlist')
+const { wishlistSchema } = require('./middlewares/Wishlist')
+const { removeFromCart, addToCart, getCart } = require('./controllers/Cart')
+const { cartSchema } = require('./middlewares/Cart')
+
 
 // user routes
 router.post('/register', validate(newUserSchema), createUser)
@@ -26,11 +31,11 @@ router.post('/reauth', reGenerateAuthToken)
 // order routes
 router.post('/order', validate(newOrderSchema), jwtMiddleware, createOrder)  
 router.post('/verify-payment', validate(verifyPaymentSchema), jwtMiddleware, verifyPayment)
-router.get('/order/all', jwtMiddleware, getOrders)
+router.get('/orders', jwtMiddleware, getOrders)
 router.get('/order/:orderId', jwtMiddleware, getOrderById)
 
 // store routes
-router.get("/store/all", jwtMiddleware, getStores)
+router.get("/stores", jwtMiddleware, getStores)
 router.get("/store/:storeId", jwtMiddleware, getStoreById)
 // use them only if you are an admin
 router.post("/store", validate(storeSchema), jwtMiddleware, createStore)
@@ -38,10 +43,21 @@ router.put("/store/:storeId", validate(storeSchema), jwtMiddleware, updateStore)
 router.delete("/store/:storeId", jwtMiddleware, deleteStore)
 
 // item routes
-router.get("/item/all", jwtMiddleware, getAllStoreItems)
+router.get("/items", jwtMiddleware, getAllStoreItems)
 router.get("/item/:itemId", jwtMiddleware, getStoreItemById)
 router.post("/item", validate(newItemSchema), jwtMiddleware, createStoreItem)
 router.put("/item/:itemId", validate(updateItemSchema), jwtMiddleware, updateStoreItem)
 router.delete("/item/:itemId", jwtMiddleware, deleteStoreItem)
+
+// wishlist routes
+router.get('/wishlist', validate(wishlistSchema), jwtMiddleware, getWishlist)
+router.post('/wishlist', validate(wishlistSchema), jwtMiddleware, addToWishlist)
+router.delete('/wishlist', validate(wishlistSchema), jwtMiddleware, removeFromWishlist)
+
+// cart routes
+router.get('/cart', validate(cartSchema), jwtMiddleware, getCart)
+router.post('/cart', validate(cartSchema), jwtMiddleware, addToCart)
+router.delete('/cart', validate(cartSchema), jwtMiddleware, removeFromCart)
+// ------------------------------------------------------------------
 
 module.exports = router
