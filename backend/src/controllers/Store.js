@@ -2,8 +2,8 @@ const Store = require('../models/Store')
 
 const createStore = async (req, res) => {
     try {
-        const { name, phone, address, coordinates, rating } = req.body
-        const store = new Store({ name, phone, address, coordinates, rating })
+        const { name, phone, address, coordinates, rating, reviews, startingPrice, category } = req.body
+        const store = new Store({ name, phone, address, coordinates, rating, reviews, startingPrice, category })
         await store.save()
         res.sendResponse({message: "Store created successfully", data: store.toObject()}, 201)
     } catch (error) {
@@ -36,11 +36,11 @@ const getStoreById = async (req, res) => {
 
 const updateStore = async (req, res) => {
     try {
-        const { name, phone, address, coordinates, rating } = req.body
+        const { name, phone, address, coordinates, rating, reviews, startingPrice, category } = req.body
 
         const store = await Store.findOneAndUpdate(
             { storeId: req.params.storeId },
-            { name, phone, address, coordinates, rating },
+            { name, phone, address, coordinates, rating, reviews, startingPrice, category },
             {
                 new: true,
                 lean: true,

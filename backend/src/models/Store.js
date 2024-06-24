@@ -27,6 +27,18 @@ const storeSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.Number,
         required: true,
     },
+    reviews: {
+        type: mongoose.Schema.Types.Number,
+        required: true,
+    },
+    startingPrice: {
+        type: mongoose.Schema.Types.Number,
+        required: true,
+    },
+    category: {
+        type: mongoose.Schema.Types.String,
+        required: true,
+    },
     createdAt: {
         type: mongoose.Schema.Types.Date,
         default: Date.now
