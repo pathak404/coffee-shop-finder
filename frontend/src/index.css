@@ -10,3 +10,7 @@
     background-color: #e5e5e5;
   }
 }
+
+.active {
+  @apply bg-lagoon-blue rounded-3xl shadow-lagoon-blue/40 shadow text-white !important;
+}
