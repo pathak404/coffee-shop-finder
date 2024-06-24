@@ -20,11 +20,6 @@ export default {
         'gold': '#FDCB6E',
         'salmon': '#F6AF9E',
       },
-      default: {
-        rounded: {
-          '3xl': '1.3rem',
-        },
-      }
     },
   },
   plugins: [],

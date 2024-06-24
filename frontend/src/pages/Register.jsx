@@ -6,7 +6,7 @@ import FormButton from '../components/FormButton'
 import AuthContext from '../context/AuthContext'
 import useFetch from '../hooks/useFetch'
 import { toast } from 'react-toastify'
-
+import { FiLock, FiAtSign, FiUser } from "react-icons/fi"
 const Register = () => {
     const { login } = useContext(AuthContext)
     const navigate = useNavigate()
@@ -20,6 +20,7 @@ const Register = () => {
     const { loading, data, fetch } = useFetch({
       path: "/register",
       method: "POST",
+      isNotify: true,
     })
   
     useEffect(() => {
@@ -51,14 +52,14 @@ const Register = () => {
 
     return (
         <div className="bg-white flex flex-col md:flex-row items-center md:justify-center h-screen relative">
-            <div className="w-full md:w-2/5 order-2 md:order-1 bg-white fixed top-48 md:top-0 md:relative rounded-t-3xl h-[calc(100vh-12rem)] md:h-auto z-10">
-                <div className="text-center h-full overflow-y-scroll md:overflow-hidden px-4">
+            <div className="w-full md:w-2/5 order-2 md:order-1 bg-white fixed top-48 md:top-0 md:relative rounded-t-3xl h-[calc(100vh-16rem)] md:h-auto">
+                <div className="text-center h-full overflow-y-scroll md:overflow-hidden px-4 pb-16">
                     <h1 className="block text-2xl md:text-4xl font-bold ms-1 text-center mb-10 mt-7 md:mt-0 leading-relaxed">Welcome to <br />Coffee Shop finder app</h1>
                     <form className="max-w-sm mx-auto" onSubmit={formHandler}>
-                        <InputGroup type={"text"} name={"name"} placeholder={"Enter your name"} handler={inputHandler} value={formData.name} />
-                        <InputGroup type={"email"} name={"email"} placeholder={"Enter your email"} handler={inputHandler} value={formData.email} />
-                        <InputGroup type={"password"} name={"password"} placeholder={"Create password"} handler={inputHandler} value={formData.password} />
-                        <InputGroup type={"password"} name={"confirmPassword"} placeholder={"Reenter the password"} handler={inputHandler} value={formData.confirmPassword} />
+                        <InputGroup icon={<FiUser className='w-5 h-5'/>} type={"text"} name={"name"} placeholder={"Enter your name"} handler={inputHandler} value={formData.name} />
+                        <InputGroup icon={<FiAtSign className='w-5 h-5'/>} type={"email"} name={"email"} placeholder={"Enter your email"} handler={inputHandler} value={formData.email} />
+                        <InputGroup icon={<FiLock className='w-5 h-5'/>} type={"password"} name={"password"} placeholder={"Create password"} handler={inputHandler} value={formData.password} />
+                        <InputGroup icon={<FiLock className='w-5 h-5'/>} type={"password"} name={"confirmPassword"} placeholder={"Reenter the password"} handler={inputHandler} value={formData.confirmPassword} />
                         <FormButton loading={false} arrow={true}>Create account</FormButton>
                     </form>
                     <div className="mx-auto grid place-items-center mt-4">

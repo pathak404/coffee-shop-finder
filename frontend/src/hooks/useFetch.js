@@ -2,7 +2,7 @@ import { useEffect, useState, useRef, useCallback, useContext } from "react"
 import { toast } from "react-toastify"
 import AuthContext from "../context/AuthContext"
 
-const useFetch = ({ path, isAuth = false, method = 'GET', body = undefined }) => {
+const useFetch = ({ path, isAuth = false, method = 'GET', body = undefined, isNotify=undefined }) => {
   console.log(path, isAuth, method, body)
   const { logout } = useContext(AuthContext)
   const [state, setState] = useState({ data: null, error: null, loading: false })
@@ -15,9 +15,7 @@ const useFetch = ({ path, isAuth = false, method = 'GET', body = undefined }) =>
   const options = useRef({
     method,
     cache: "no-cache",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: headersRef.current,
     body: body ? JSON.stringify(body) : undefined,
   })
 
@@ -40,6 +38,7 @@ const useFetch = ({ path, isAuth = false, method = 'GET', body = undefined }) =>
       localStorage.setItem("authToken", data.authToken)
       localStorage.setItem("refreshToken", data.refreshToken)
       headersRef.current["Authorization"] = "Bearer " + data.authToken
+      return true
     } catch (error) {
       toast.error("Unauthorized: Please login again.")
       logout()
@@ -60,15 +59,15 @@ const useFetch = ({ path, isAuth = false, method = 'GET', body = undefined }) =>
       if (!response.ok) {
         const errorResponse = await response.json()
         if (response.status === 401 && errorResponse.message?.includes("Unauthorized")) {
-          await reAuth()
-          return fetchHandler()
+          const tryReAuth = await reAuth()
+          if (tryReAuth) return fetchHandler()
         }
         throw new Error(errorResponse?.message || response.statusText)
       }
       const jsonResponse = await response.json()
       if (isMounted.current) {
         setState({ data: jsonResponse?.data, error: null, loading: false })
-        toast.success(jsonResponse?.message)
+        if (isNotify) toast.success(jsonResponse?.message)
       }
     } catch (error) {
       if (isMounted.current) {

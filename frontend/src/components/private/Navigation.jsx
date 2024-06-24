@@ -9,7 +9,7 @@ const Navigation = () => {
   return (
     <div className='bg-white md:bg-transparent w-full h-full p-5 flex flex-row md:flex-col items-center justify-between md:justify-evenly'>
         <div className="hidden md:block">
-            <img src={userImg} className='w-16 h-16 rounded-full' alt="user profile" />
+            <img src={userImg} className='w-14 h-14 rounded-full' alt="user profile" />
         </div>
 
         <NavLink to="/" className="text-lg md:text-2xl font-bold text-disabled md:text-black p-4"><FiHome className='w-6 h-6'/></NavLink>
