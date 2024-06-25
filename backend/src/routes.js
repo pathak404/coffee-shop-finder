@@ -50,12 +50,12 @@ router.put("/item/:itemId", validate(updateItemSchema), jwtMiddleware, updateSto
 router.delete("/item/:itemId", jwtMiddleware, deleteStoreItem)
 
 // wishlist routes
-router.get('/wishlist', validate(wishlistSchema), jwtMiddleware, getWishlist)
+router.get('/wishlist', jwtMiddleware, getWishlist)
 router.post('/wishlist', validate(wishlistSchema), jwtMiddleware, addToWishlist)
 router.delete('/wishlist', validate(wishlistSchema), jwtMiddleware, removeFromWishlist)
 
 // cart routes
-router.get('/cart', validate(cartSchema), jwtMiddleware, getCart)
+router.get('/cart', jwtMiddleware, getCart)
 router.post('/cart', validate(cartSchema), jwtMiddleware, addToCart)
 router.delete('/cart', validate(cartSchema), jwtMiddleware, removeFromCart)
 // ------------------------------------------------------------------

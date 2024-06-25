@@ -1,13 +1,14 @@
+const Store = require('../models/Store')
 const Wishlist = require('../models/Wishlist')
 
 const addToWishlist = async (req, res) => {
     try {
-        const { itemId } = req.body
+        const { storeId } = req.body
         let wishlist = await Wishlist.findOne({ userId: req.userId })
         if (!wishlist) {
-            wishlist = new Wishlist({ userId: req.userId, items: [{ itemId }] })
+            wishlist = new Wishlist({ userId: req.userId, stores: [{ storeId }] })
         } else {
-            wishlist.items.push({ itemId })
+            wishlist.stores.push({ storeId })
         }
         await wishlist.save();
         res.sendResponse({ message: 'Item added to wishlist' })
@@ -18,8 +19,13 @@ const addToWishlist = async (req, res) => {
 
 const getWishlist = async (req, res) => {
     try {
-        const wishlist = await Wishlist.findOne({ userId: req.userId }).populate('items.itemId')
-        res.sendResponse({ wishlist })
+        const { stores= []} = await Wishlist.findOne({ userId: req.userId })
+        if (stores.length === 0) {
+            return res.sendResponse({ message: 'Wishlist is empty', data: [] })
+        }
+        const wishlistData = await Store.find({storeId: {$in: stores.map(store => store.storeId)}}, { _id: 0, __v: 0})
+
+        res.sendResponse({ message: 'Wishlist fetched successfully', data: wishlistData})
     } catch (error) {
         res.sendResponse({ message: 'Failed to get wishlist' }, 500)
     }
@@ -27,12 +33,12 @@ const getWishlist = async (req, res) => {
 
 const removeFromWishlist = async (req, res) => {
     try {
-        const { itemId } = req.body
+        const { storeId } = req.body
         let wishlist = await Wishlist.findOne({ userId: req.userId })
         if (!wishlist) {
             return res.sendResponse({ message: 'Wishlist not found' }, 404)
         }
-        wishlist.items = wishlist.items.filter(item => item.itemId != itemId)
+        wishlist.stores = wishlist.stores.filter(store => store.storeId != storeId)
         await wishlist.save();
         res.sendResponse({ message: 'Item removed from wishlist' })
     } catch (error) {
