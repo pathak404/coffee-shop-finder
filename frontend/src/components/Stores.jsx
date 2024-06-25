@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect } from 'react'
 import StoreCard from './StoreCard'
 import useFetch from '../hooks/useFetch'
-import productImage from './ProductsImg'
+import StoreImagesObj from './StoreImages'
 
 const Stores = ({ stores }) => {
   const { data, fetch } = useFetch({ path: '/wishlist', method: 'GET', isNotify: false })
@@ -43,7 +43,7 @@ const Stores = ({ stores }) => {
             name={shop.name}
             rating={shop.rating}
             reviews={shop.reviews}
-            imageUrl={productImage[index]}
+            imageUrl={StoreImagesObj[shop.storeId]}
             className={`${index % 2 != 0 ? 'translate-y-5' : ''}`}
             heartFill={wishlist?.find(store => store.storeId === shop.storeId) ? 'rgb(0 59 64)' : 'rgb(237, 240, 239)'}
             updateWishlist={updateWishlist}
