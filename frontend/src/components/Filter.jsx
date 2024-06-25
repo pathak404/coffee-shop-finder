@@ -1,9 +1,9 @@
 import { useState } from "react";
-import switchImg from "../../assets/icons/switch.svg";
+import switchImg from "../assets/icons/switch.svg";
 
 const Filter = ({ onFilter, onSort }) => {
   const [isOpened, setIsOpened] = useState(false);
-  const [price, setPrice] = useState(0);
+  const [startingPrice, setStartingPrice] = useState(150);
   const [category, setCategory] = useState("all");
   const [sortBy, setSortBy] = useState("");
 
@@ -13,14 +13,14 @@ const Filter = ({ onFilter, onSort }) => {
 
   const handlePriceChange = (event) => {
     const newPrice = event.target.value;
-    setPrice(newPrice);
-    onFilter({ price: newPrice, category, sortBy });
+    setStartingPrice(newPrice);
+    onFilter({ startingPrice: newPrice, category, sortBy });
   };
 
   const handleCategoryChange = (event) => {
     const newCategory = event.target.value;
     setCategory(newCategory);
-    onFilter({ price, category: newCategory, sortBy });
+    onFilter({ startingPrice, category: newCategory, sortBy });
   };
 
   const handleSortByChange = (event) => {
@@ -30,10 +30,10 @@ const Filter = ({ onFilter, onSort }) => {
   };
 
   const handleClear = () => {
-    setPrice(0);
+    setStartingPrice(150);
     setCategory("all");
     setSortBy("");
-    onFilter({ price: 0, category: "all", sortBy: "" });
+    onFilter({ startingPrice: 150, category: "all", sortBy: "" });
   };
 
   return (
@@ -64,11 +64,11 @@ const Filter = ({ onFilter, onSort }) => {
             </label>
             <input
               type="range"
-              min={0}
-              max={100}
+              min={40}
+              max={150}
               id="filter"
               className="w-full bg-sea-form-1 px-4 py-2 rounded-lg mt-1"
-              value={price}
+              value={startingPrice}
               onChange={handlePriceChange}
             />
           </div>

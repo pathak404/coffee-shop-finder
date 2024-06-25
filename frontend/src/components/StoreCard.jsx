@@ -1,29 +1,9 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react'
+import React, { useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { FiHeart, FiStar } from 'react-icons/fi'
 
-const StoreCard = ({ storeId, name, rating, reviews, imageUrl, className }) => {
+const StoreCard = ({ storeId, name, rating, reviews, imageUrl, className, updateWishlist, heartFill }) => {
     const distance = useRef(Math.floor(Math.random() * 10) + 1)
-    const [wishlist, setWishlist] = useState([])
-
-    useEffect(() => {
-        const wishlist = localStorage.getItem('wishlist') ? JSON.parse(localStorage.getItem('wishlist')) : []
-        setWishlist(wishlist)
-    }, [])
-
-    const wishlistHandler = (store) => {
-        setWishlist((prevWishlist) => {
-            const storeExists = prevWishlist.some(item => item.storeId === store.storeId);
-            let updatedWishlist;
-            if (storeExists) {
-                updatedWishlist = prevWishlist.filter(item => item.storeId !== store.storeId);
-            } else {
-                updatedWishlist = [...prevWishlist, {...store}];
-            }
-            localStorage.setItem('wishlist', JSON.stringify(updatedWishlist));
-            return updatedWishlist;
-        });
-    };
 
     return (
         <div className={`relative overflow-visible mb-6 max-w-[12rem] ${className}`}>
@@ -40,7 +20,7 @@ const StoreCard = ({ storeId, name, rating, reviews, imageUrl, className }) => {
                 </div>
             </Link>
             <div className="absolute -top-2 -right-2 bg-sea-form-1 border-2 border-white rounded-full p-1">
-                <FiHeart onClick={() => wishlistHandler({storeId})} className="text-lagoon-blue cursor-pointer" fill={`${wishlist?.find(store => store.storeId === storeId) ? 'rgb(0 59 64)' : 'rgb(237, 240, 239)'}`} />
+                <FiHeart onClick={() => updateWishlist(storeId)} className="text-lagoon-blue cursor-pointer" fill={heartFill} />
             </div>
         </div>
     )

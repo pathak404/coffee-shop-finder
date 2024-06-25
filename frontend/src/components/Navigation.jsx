@@ -1,8 +1,8 @@
 import React, { useContext } from 'react'
-import userImg from "../../assets/images/user.png"
+import userImg from "../assets/images/user.png"
 import { NavLink } from 'react-router-dom'
 import { FiHome, FiHeart, FiShoppingCart, FiUser, FiShoppingBag, FiLogOut  } from "react-icons/fi"
-import AuthContext from '../../context/AuthContext'
+import AuthContext from '../context/AuthContext'
 
 const Navigation = () => {
   const {logout} = useContext(AuthContext)

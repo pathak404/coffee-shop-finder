@@ -1,6 +1,6 @@
 import { useContext, useEffect } from "react"
 import AuthContext from "../../context/AuthContext"
-import Navigation from "../../components/private/Navigation"
+import Navigation from "../../components/Navigation"
 
 const ProtectedPage = ({children}) => {
     const {isAuth} = useContext(AuthContext)

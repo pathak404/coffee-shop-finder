@@ -19,6 +19,7 @@ const Login = () => {
     const { loading, data, fetch } = useFetch({
       path: "/login",
       method: "POST",
+      isAuth: false,
       isNotify: true,
     })
   
@@ -42,7 +43,7 @@ const Login = () => {
         toast.error("Password must be at least 6 characters long")
         return;
       }
-      fetch(formData)
+      fetch({customBody: formData})
     }
 
     return (

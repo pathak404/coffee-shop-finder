@@ -17,9 +17,10 @@ const Register = () => {
       confirmPassword: "",
     })
   
-    const { loading, data, fetch } = useFetch({
+    const { data, fetch } = useFetch({
       path: "/register",
       method: "POST",
+      isAuth: false,
       isNotify: true,
     })
   
@@ -47,7 +48,7 @@ const Register = () => {
         toast.error("Passwords do not match")
         return;
       }
-      fetch(formData)
+      fetch({customBody: formData})
     }
 
     return (
