@@ -14,3 +14,14 @@
 .active {
   @apply bg-lagoon-blue rounded-3xl shadow-lagoon-blue/40 shadow text-white !important;
 }
+
+.custom-scrollbar::-webkit-scrollbar {
+  width: 2px;
+}
+.custom-scrollbar::-webkit-scrollbar-thumb {
+  @apply bg-sea-form-2;
+  border-radius: 6px;
+}
+.custom-scrollbar::-webkit-scrollbar-track {
+  background-color: #e5e5e5;
+}

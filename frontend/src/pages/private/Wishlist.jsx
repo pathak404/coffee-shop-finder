@@ -39,7 +39,7 @@ const Wishlist = () => {
         <img src={userImg} className='w-12 h-12 rounded-full' alt="user profile" />
       </div>
       <div className="mt-5">
-        <h1 className='text-2xl md:text-5xl font-semibold'>Your Wishlist</h1>
+        <h1 className='text-2xl md:text-5xl font-semibold'>Your Favorite Stores</h1>
       </div>
 
       <div className="w-full mt-10 md:bg-white md:p-4 lg:p-6 xl:p-10 md:rounded-t-3xl md:h-[563px]">

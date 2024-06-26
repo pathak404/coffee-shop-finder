@@ -14,7 +14,6 @@ const Stores = ({ stores }) => {
   useEffect(() => {
     if (data) {
       setWishlist(data)
-      console.log("wishlist: " + JSON.stringify(data))
     }
   }, [data])
 

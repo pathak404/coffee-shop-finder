@@ -13,10 +13,10 @@ const StoreCard = ({ storeId, name, rating, reviews, imageUrl, className, update
                     <h3 className="text-lg font-semibold text-lagoon-blue">{name}</h3>
                     <div className="flex items-center text-gold">
                         <span className="mr-1"><FiStar fill='rgb(253 203 110)' /></span>
-                        <span className="text-black">{rating}</span>
+                        <span className="text-lagoon-blue font-semibold">{rating}&nbsp;</span>
+                        <span className="text-sea-form-2 text-sm">{reviews} reviews</span>
                     </div>
-                    <div className="text-sea-form-2 md:text-black text-sm">{reviews} reviews</div>
-                    <div className="text-sea-form-2 md:text-black text-sm mt-2">{distance.current} miles</div>
+                    <div className="text-lagoon-blue font-semibold text-sm mt-1">{distance.current} miles</div>
                 </div>
             </Link>
             <div className="absolute -top-2 -right-2 bg-sea-form-1 border-2 border-white rounded-full p-1">

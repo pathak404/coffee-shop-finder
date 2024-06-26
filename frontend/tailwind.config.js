@@ -20,6 +20,17 @@ export default {
         'gold': '#FDCB6E',
         'salmon': '#F6AF9E',
       },
+      typography: {
+        DEFAULT: {
+          css: {
+            '.hyphens-auto': {
+            hyphens: 'auto',
+            '-webkit-hyphens': 'auto',
+            '-ms-hyphens': 'auto',
+            }
+          }
+        }
+      }
     },
   },
   plugins: [],

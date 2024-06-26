@@ -12,11 +12,10 @@ const WishlistCard = ({ storeId, name, rating, reviews, imageUrl, className, rem
                     <h3 className="text-lg font-semibold text-lagoon-blue">{name}</h3>
                     <div className="flex items-center text-gold">
                         <span className="mr-1"><FiStar fill='rgb(253 203 110)' /></span>
-                        <span className="text-black">{rating} &nbsp;&nbsp;|&nbsp;&nbsp;</span>
-                        <span className="text-sea-form-2 md:text-black text-sm">{reviews} reviews</span>
+                        <span className="text-lagoon-blue font-semibold">{rating}&nbsp;</span>
+                        <span className="text-sea-form-2 text-sm">{reviews} reviews</span>
                     </div>
-                    <div className="text-sea-form-2 md:text-black text-sm mt-2">{distance.current} miles</div>
-                    {/* <p className="text-lagoon-blue flex items-center font-medium mt-3"><FiShoppingCart className='text-lg me-3' /> Add to Cart</p> */}
+                    <div className="text-lagoon-blue font-semibold text-sm mt-1">{distance.current} miles</div>
                 </div>
             </Link>
             <div className="absolute -top-2 -right-2 bg-sea-form-1 border-2 border-white rounded-full p-1">
