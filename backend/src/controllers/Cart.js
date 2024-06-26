@@ -1,52 +1,74 @@
 const Cart = require('../models/Cart')
-
-const addToCart = async (req, res) => {
-    const { itemId, quantity } = req.body
-    try {
-        let cart = await Cart.findOne({ userId: req.userId })
-        if (!cart) {
-            cart = new Cart({userId: req.userId, items: [{ itemId, quantity }] })
-        } else {
-            const itemIndex = cart.items.findIndex(item => item.itemId.toString() === itemId)
-            if (itemIndex > -1) {
-                cart.items[itemIndex].quantity += quantity
-            } else {
-                cart.items.push({ productId, quantity })
-            }
-        }
-        await cart.save()
-        res.sendResponse({ message: 'Item added to cart' })
-    } catch (error) {
-        res.sendResponse({ message: 'Failed to add item to cart' }, 500)
-    }
-}
+const StoreItem = require('../models/StoreItem')
 
 const getCart = async (req, res) => {
     try {
-        const cart = await Cart.findOne({ userId: req.userId }).populate('items.itemId')
-        res.sendResponse({ cart })
+        const cart = await Cart.findOne({ userId: req.userId })
+        if (!cart || cart.items.length === 0) {
+            return res.sendResponse({ message: 'Cart is empty', data: [] })
+        }
+        const items = cart.items
+        const itemIds = items.map(item => item.itemId)
+        const storeItems = await StoreItem.find({ itemId: { $in: itemIds } }, { _id: 0, __v: 0 })
+        console.log('storeItems:', storeItems, 'items:', itemIds)
+        const cartData = storeItems.map(storeItem => {
+            const cartItem = items.find(item => item.itemId === storeItem.itemId)
+            if (cartItem) {
+                return {
+                    ...storeItem.toObject(),
+                    quantity: cartItem.quantity
+                }
+            } else {
+                return storeItem.toObject()
+            }
+        })
+        res.sendResponse({ message: 'Cart fetched successfully', data: cartData })
     } catch (error) {
-        res.sendResponse({ message: 'Failed to get cart' }, 500)
+        console.error('Failed to get cart:', error)
+        res.sendResponse({ message: 'Failed to get cart: '+error.message }, 500)
     }
 }
 
-const removeFromCart = async (req, res) => {
-    const { itemId } = req.body
+
+const updateCart = async (req, res) => {
+    const { storeId, itemId, quantity } = req.body
+    let message;
     try {
-        const cart = await Cart.findOne({ userId: req.userId})
+        let cart = await Cart.findOne({ userId: req.userId })
         if (!cart) {
-            return res.status(404).json({ message: 'Cart not found' })
+            cart = new Cart({
+                userId: req.userId,
+                storeId: storeId,
+                items: [{ itemId: itemId, quantity: quantity }]
+            })
+            message = 'Added to cart'
+        } else {
+            if (quantity === 0) {
+                cart.items = cart.items.filter(item => item.itemId.toString() !== itemId)
+                message = 'Removed from cart'
+            } else {
+                if (cart.storeId !== storeId) {
+                    cart.storeId = storeId
+                    cart.items = []
+                }
+                const itemIndex = cart.items.findIndex(item => item.itemId.toString() === itemId)
+                if (itemIndex > -1) {
+                    cart.items[itemIndex].quantity = quantity
+                    message = 'Cart updated successfully'
+                } else {
+                    cart.items.push({ itemId: itemId, quantity: quantity })
+                    message = 'Added to cart'
+                }
+            }
         }
-        cart.items = cart.items.filter(item => item.itemId.toString() !== itemId)
         await cart.save()
-        res.sendResponse({ message: 'Item removed from cart' })
+        res.sendResponse({ message: message })
     } catch (error) {
-        res.sendResponse({ message: 'Failed to remove item from cart' }, 500)
+        res.sendResponse({ message: 'Failed to update cart: ' + error.message }, 500)
     }
 }
 
 module.exports = {
-    addToCart,
+    updateCart,
     getCart,
-    removeFromCart,
 }

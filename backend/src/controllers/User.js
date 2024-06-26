@@ -1,3 +1,4 @@
+const Cart = require("../models/Cart")
 const User = require("../models/User")
 const { generateJWT, verifyJWT } = require("../utils")
 
@@ -17,7 +18,7 @@ const createUser = async (req, res) => {
         user.setPassword(password)
         await user.save()
         const token = generateJWT(user.userId)
-        res.sendResponse({ message: "Your account has been created successfully", data: {...user.toObject(), ...token} }, 201)
+        res.sendResponse({ message: "Your account has been created successfully", data: {...user.toObject(), ...token, totalCart: 0} }, 201)
 
     } catch(error){
         res.sendResponse({ message: error.message }, 400)
@@ -39,7 +40,12 @@ const loginUser = async (req, res) => {
         }
         const token = generateJWT(user.userId)
         user.password = undefined
-        res.sendResponse({ message: "Login successfull", data: { ...user.toObject(), ...token} })
+        const cart = await Cart.findOne({ userId: user.userId })
+        let totalCart = 0
+        if(cart){
+            totalCart = cart.items.length
+        }
+        res.sendResponse({ message: "Login successfull", data: { ...user.toObject(), ...token, totalCart} })
 
     } catch(error){
         res.sendResponse({ message: error.message }, 400)

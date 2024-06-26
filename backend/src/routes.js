@@ -11,11 +11,11 @@ const { getStores, getStoreById, createStore, updateStore, deleteStore } = requi
 const { storeSchema } = require('./middlewares/Store')
 
 const { newItemSchema, updateItemSchema } = require('./middlewares/StoreItem')
-const { getAllStoreItems, getStoreItemById, createStoreItem, updateStoreItem, deleteStoreItem } = require('./controllers/StoreItem')
+const { getAllStoreItems, getStoreItemById, getStoreItemByStoreId, createStoreItem, updateStoreItem, deleteStoreItem } = require('./controllers/StoreItem')
 
 const { addToWishlist, removeFromWishlist, getWishlist } = require('./controllers/Wishlist')
 const { wishlistSchema } = require('./middlewares/Wishlist')
-const { removeFromCart, addToCart, getCart } = require('./controllers/Cart')
+const { getCart, updateCart } = require('./controllers/Cart')
 const { cartSchema } = require('./middlewares/Cart')
 
 
@@ -37,6 +37,7 @@ router.get('/order/:orderId', jwtMiddleware, getOrderById)
 // store routes
 router.get("/stores", jwtMiddleware, getStores)
 router.get("/store/:storeId", jwtMiddleware, getStoreById)
+router.get("/store/:storeId/items", jwtMiddleware, getStoreItemByStoreId)
 // use them only if you are an admin
 router.post("/store", validate(storeSchema), jwtMiddleware, createStore)
 router.put("/store/:storeId", validate(storeSchema), jwtMiddleware, updateStore)
@@ -56,8 +57,7 @@ router.delete('/wishlist', validate(wishlistSchema), jwtMiddleware, removeFromWi
 
 // cart routes
 router.get('/cart', jwtMiddleware, getCart)
-router.post('/cart', validate(cartSchema), jwtMiddleware, addToCart)
-router.delete('/cart', validate(cartSchema), jwtMiddleware, removeFromCart)
+router.post('/cart', validate(cartSchema), jwtMiddleware, updateCart)
 // ------------------------------------------------------------------
 
 module.exports = router

@@ -2,8 +2,8 @@ const StoreItem = require('../models/StoreItem')
 
 const createStoreItem = async (req, res) => {
     try {
-        const { storeId, name, price } = req.body
-        const storeItem = await StoreItem.create({ storeId, name, price })
+        const { storeId, name, price, category, desc } = req.body
+        const storeItem = await StoreItem.create({ storeId, name, price, category, desc })
         res.sendResponse({ message: 'Store item created successfully', data: {...storeItem.toObject()} }, 201)
     } catch (error) {
         res.sendResponse({ message: error.message }, 500)
@@ -14,7 +14,7 @@ const createStoreItem = async (req, res) => {
 const getAllStoreItems = async (_req, res) => {
     try {
         const storeItems = await StoreItem.find({}, { _id: 0, __v: 0 }).lean()
-        res.sendResponse({ data: {...storeItems}, message: 'Store items fetched successfully' }, 200)
+        res.sendResponse({ data: storeItems, message: 'Store items fetched successfully' }, 200)
     } catch (error) {
         res.sendResponse({ message: error.message }, 500)
     }
@@ -30,13 +30,22 @@ const getStoreItemById = async (req, res) => {
     }
 }
 
+const getStoreItemByStoreId = async (req, res) => {
+    try {
+        const storeItems = await StoreItem.find({storeId: req.params.storeId}, { _id: 0, __v: 0 }).lean()
+        res.sendResponse({ data: storeItems, message: 'Store items fetched successfully' }, 200)
+    } catch (error) {
+        res.sendResponse({ message: error.message }, 500)
+    }
+}
+
 
 const updateStoreItem = async (req, res) => {
     try {
-        const { storeId, name, price } = req.body
+        const { storeId, name, price, category, desc } = req.body
         const storeItem = await StoreItem.findOneAndUpdate(
             {itemId: req.params.itemId}, 
-            {storeId, name, price}, 
+            {storeId, name, price, category, desc}, 
             {
                 new: true,
                 lean: true,
@@ -63,6 +72,7 @@ const deleteStoreItem = async (req, res) => {
 module.exports = {
     getAllStoreItems,
     getStoreItemById,
+    getStoreItemByStoreId,
     createStoreItem,
     updateStoreItem,
     deleteStoreItem,

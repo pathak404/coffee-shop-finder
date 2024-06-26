@@ -3,7 +3,8 @@ const { generateRandomString } = require("../utils")
 
 const storeItemSchema = new mongoose.Schema({
     itemId: { 
-        type: mongoose.Schema.Types.String, 
+        type: mongoose.Schema.Types.String,
+        unique: true, 
         required: true 
     },
     storeId: { 
@@ -16,6 +17,14 @@ const storeItemSchema = new mongoose.Schema({
     },
     price: { 
         type: mongoose.Schema.Types.Number, 
+        required: true 
+    },
+    category: { 
+        type: mongoose.Schema.Types.String, 
+        required: true 
+    },
+    desc: { 
+        type: mongoose.Schema.Types.String, 
         required: true 
     },
 }, {
