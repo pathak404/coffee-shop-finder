@@ -12,19 +12,27 @@ import Store from "./pages/private/Store"
 
 function App() {
   const [isAuth, setAuth] = useState(localStorage.getItem("authToken") || null)
+  const [totalCart, setTotalCart] = useState(localStorage.getItem("totalCart") || 0)
 
   const login = ({authToken, refreshToken, ...rest}) => {
-    setAuth(authToken)
     localStorage.setItem("authToken", authToken)
     localStorage.setItem("refreshToken", refreshToken)
     localStorage.setItem("user", JSON.stringify(rest))
+    updateTotalCart(rest.totalCart)
+    setAuth(authToken)
   }
 
   const logout = () => {
-    setAuth(null)
     localStorage.removeItem("authToken")
     localStorage.removeItem("refreshToken")
     localStorage.removeItem("user")
+    updateTotalCart(0)
+    setAuth(null)
+  }
+
+  const updateTotalCart = (value) => {
+    setTotalCart(value)
+    localStorage.setItem("totalCart", value)
   }
 
 
@@ -43,13 +51,13 @@ function App() {
     },
     {
       path: "/store/:storeId",
-      element: <ProtectedPage><Store /></ProtectedPage>
+      element: <ProtectedPage layout={2}><Store /></ProtectedPage>
     }
   ])
 
   return (
-    <AuthContext.Provider value={{isAuth, login, logout}}>
-      <ToastContainer position="top-center" />
+    <AuthContext.Provider value={{isAuth, login, logout, updateTotalCart, totalCart}}>
+      <ToastContainer position="top-center" hideProgressBar={true} autoClose={2000} />
       <RouterProvider router={router}>
       </RouterProvider>
     </AuthContext.Provider>
