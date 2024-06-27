@@ -6,7 +6,7 @@ const itemSchema = new mongoose.Schema({
     name: { type: mongoose.Schema.Types.String, required: true },
     quantity: { type: mongoose.Schema.Types.Number, required: true },
     price: { type: mongoose.Schema.Types.Number, required: true }
-})
+}, { _id: false })
 
 
 const orderSchema = new mongoose.Schema({

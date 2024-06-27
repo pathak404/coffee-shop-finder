@@ -5,7 +5,7 @@ const { createUser, loginUser, reGenerateAuthToken } = require('./controllers/Us
 const { loginSchema, newUserSchema } = require('./middlewares/User')
 
 const { createOrder, verifyPayment, getOrders, getOrderById } = require('./controllers/Order')
-const {newOrderSchema, verifyPaymentSchema} = require('./middlewares/Order')
+const { verifyPaymentSchema } = require('./middlewares/Order')
 
 const { getStores, getStoreById, createStore, updateStore, deleteStore } = require('./controllers/Store')
 const { storeSchema } = require('./middlewares/Store')
@@ -29,7 +29,7 @@ router.post('/reauth', reGenerateAuthToken)
 // protected routes ------------------------------------------------
 
 // order routes
-router.post('/order', validate(newOrderSchema), jwtMiddleware, createOrder)  
+router.post('/order', jwtMiddleware, createOrder)  
 router.post('/verify-payment', validate(verifyPaymentSchema), jwtMiddleware, verifyPayment)
 router.get('/orders', jwtMiddleware, getOrders)
 router.get('/order/:orderId', jwtMiddleware, getOrderById)

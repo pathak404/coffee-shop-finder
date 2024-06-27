@@ -4,16 +4,16 @@ const { generateJWT, verifyJWT } = require("../utils")
 
 const createUser = async (req, res) => {
     try{
-        const { name, email, password } = req.body
+        const { name, phone, password } = req.body
 
-        const isExists = await User.findOne({ email })
+        const isExists = await User.findOne({ phone })
         if (isExists) {
-            return res.sendResponse({ message: "Sorry!, An account exists with this email address"}, 400)
+            return res.sendResponse({ message: "Sorry!, An account exists with this phone number"}, 400)
         }
 
         const user = new User({ 
             name, 
-            email,
+            phone,
         })
         user.setPassword(password)
         await user.save()
@@ -29,14 +29,14 @@ const createUser = async (req, res) => {
 
 const loginUser = async (req, res) => {
     try{
-        const { email, password } = req.body
+        const { phone, password } = req.body
 
-        const user = await User.findOne({ email })
+        const user = await User.findOne({ phone })
         if (!user) {
-            return res.sendResponse({ message: "Invalid email or password" }, 401)
+            return res.sendResponse({ message: "Invalid phone number or password" }, 401)
         }
         if (!user.verifyPassword(password)) {
-            return res.sendResponse({ message: "Invalid email or password" }, 401)
+            return res.sendResponse({ message: "Invalid phone number or password" }, 401)
         }
         const token = generateJWT(user.userId)
         user.password = undefined

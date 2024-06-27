@@ -12,8 +12,8 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.String,
         required: false,
     },
-    email: {
-        type: mongoose.Schema.Types.String,
+    phone: {
+        type: mongoose.Schema.Types.Number,
         required: true,
         unique: true
     },

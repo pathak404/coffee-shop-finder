@@ -10,7 +10,6 @@ const getCart = async (req, res) => {
         const items = cart.items
         const itemIds = items.map(item => item.itemId)
         const storeItems = await StoreItem.find({ itemId: { $in: itemIds } }, { _id: 0, __v: 0 })
-        console.log('storeItems:', storeItems, 'items:', itemIds)
         const cartData = storeItems.map(storeItem => {
             const cartItem = items.find(item => item.itemId === storeItem.itemId)
             if (cartItem) {
@@ -24,7 +23,6 @@ const getCart = async (req, res) => {
         })
         res.sendResponse({ message: 'Cart fetched successfully', data: cartData })
     } catch (error) {
-        console.error('Failed to get cart:', error)
         res.sendResponse({ message: 'Failed to get cart: '+error.message }, 500)
     }
 }

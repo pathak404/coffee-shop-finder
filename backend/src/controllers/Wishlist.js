@@ -19,15 +19,15 @@ const addToWishlist = async (req, res) => {
 
 const getWishlist = async (req, res) => {
     try {
-        const { stores= []} = await Wishlist.findOne({ userId: req.userId })
-        if (stores.length === 0) {
+        const wishlistDoc = await Wishlist.findOne({ userId: req.userId })
+        if (!wishlistDoc || !wishlistDoc.stores.length) {
             return res.sendResponse({ message: 'Wishlist is empty', data: [] })
         }
-        const wishlistData = await Store.find({storeId: {$in: stores.map(store => store.storeId)}}, { _id: 0, __v: 0})
+        const wishlistData = await Store.find({storeId: {$in: wishlistDoc.stores.map(store => store.storeId)}}, { _id: 0, __v: 0})
 
         res.sendResponse({ message: 'Wishlist fetched successfully', data: wishlistData})
     } catch (error) {
-        res.sendResponse({ message: 'Failed to get wishlist' }, 500)
+        res.sendResponse({ message: 'Failed to get wishlist: '+error }, 500)
     }
 }
 

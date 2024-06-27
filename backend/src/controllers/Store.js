@@ -13,7 +13,7 @@ const createStore = async (req, res) => {
 
 const getStores = async (_req, res) => {
     try {
-        const stores = await Store.find({}, { _id: 0, __v: 0 }).lean()
+        const stores = await Store.find({}, { _id: 0, __v: 0 }).sort({createdAt: -1}).lean()
         res.sendResponse({message: "Stores fetched successfully", data: stores })
     } catch (error) {
         res.sendResponse({ message: 'Failed to get stores: '+ error.message }, 500)

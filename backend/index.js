@@ -21,6 +21,9 @@ mongoose.connection.on("error", (error) => {
     console.log(error)
     process.abort()
 })
+mongoose.connection.once("open", () => {
+    console.log("Connected to MongoDB")
+})
 
 app.get("/", (_req, res) => {
     res.sendResponse({ message: "Welcome to Coffee Shop API!"})
