@@ -45,7 +45,7 @@ const Checkout = ({ cart, updatePaymentStatus, updateDelayedLoading }) => {
             currency: 'INR',
             name: 'Coffee Shop',
             description: 'A test transaction for coffee shop',
-            image: import.meta.env.VITE_FRONTEND_URL + '/logo.svg',
+            image: '/logo.svg',
             order_id: data.razorpayOrderId,
             handler: onSuccess,
             modal: {
