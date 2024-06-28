@@ -28,7 +28,7 @@ const Wishlist = () => {
     if (!loading) {
       setTimeout(() => {
         setDelayedLoading(false)
-      }, 400)
+      }, 700)
     }
   }, [loading])
 

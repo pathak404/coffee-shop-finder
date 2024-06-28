@@ -30,7 +30,7 @@ const Home = () => {
     if (!loading) {
       setTimeout(() => {
         setDelayedLoading(false)
-      }, 400)
+      }, 700)
     }
   }, [loading])
 

@@ -35,11 +35,11 @@ const Stores = ({ stores }) => {
 
   return (
     <div className="w-full mt-10 md:bg-white md:p-4 lg:p-6 xl:p-10 md:rounded-t-3xl">
-      {stores?.length === 0 && <NoData 
+      {stores?.length === 0 ? <NoData 
         textClassNames="md:text-xl" 
         containerClassNames="relative -top-20 min-h-[343px] md:min-h-[563px]"
         text='No stores found'
-      />}
+      /> : 
       <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-5">
         {stores?.map((shop, index) => (
           <StoreCard
@@ -54,7 +54,7 @@ const Stores = ({ stores }) => {
             updateWishlist={updateWishlist}
           />
         ))}
-      </div>
+      </div>}
     </div>
   )
 }
