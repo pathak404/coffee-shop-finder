@@ -19,6 +19,7 @@ export default {
         'mint': '#E8F2F1',
         'gold': '#FDCB6E',
         'salmon': '#F6AF9E',
+        'success': '#2ECC71'
       },
       typography: {
         DEFAULT: {

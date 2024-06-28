@@ -6,14 +6,20 @@ import img4 from '../assets/items/4.jpg'
 import img5 from '../assets/items/5.jpg'
 import img6 from '../assets/items/6.jpg'
 
-const itemImages = {
-    "ITMd3bgk1719302524440": img0,
-    "ITMzF1zE1719302582850": img1,
-    "ITMURMNS1719302619420": img2,
-    "ITMSp0er1719302709052": img3,
-    "ITMqmaBU1719302884003": img4,
-    "ITM0JPl51719302917232": img5,
-    "ITM5bsIW1719303019548": img6,
-}
+const itemImages = [img0, img1, img2, img3, img4, img5, img6]
+const itemIds = [
+    "ITM728tD1719467205365",
+    "ITMFkJew1719468038323",
+    "ITM7L96p1719468038325",
+    "ITMBIqs81719468038325",
+    "ITMzZdmk1719468038326",
+    "ITMfR3Kb1719468038326",
+    "ITMYIZmc1719468038327"
+]
 
-export default itemImages
+const itemImagesObj = {}
+itemIds.forEach((item, index) => {
+    itemImagesObj[item] = itemImages[index]
+})
+
+export default itemImagesObj

@@ -9,6 +9,10 @@ import Home from "./pages/private/Home"
 import ProtectedPage from "./pages/private/ProtectedPage"
 import Wishlist from "./pages/private/Wishlist"
 import Store from "./pages/private/Store"
+import Cart from "./pages/private/Cart"
+import Orders from "./pages/private/Orders"
+import Order from "./pages/private/Order"
+
 
 function App() {
   const [isAuth, setAuth] = useState(localStorage.getItem("authToken") || null)
@@ -52,6 +56,18 @@ function App() {
     {
       path: "/store/:storeId",
       element: <ProtectedPage layout={2}><Store /></ProtectedPage>
+    },
+    {
+      path: "/cart",
+      element: <ProtectedPage layout={2}><Cart /></ProtectedPage>
+    },
+    {
+      path: "/orders",
+      element: <ProtectedPage><Orders /></ProtectedPage>
+    },
+    {
+      path: "/orders/:orderId",
+      element: <ProtectedPage><Order /></ProtectedPage>
     }
   ])
 

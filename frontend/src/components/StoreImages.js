@@ -17,21 +17,21 @@ import productImage15 from "../assets/images/productImage15.jpg"
 const StoreImages = [productImage0, productImage1, productImage2, productImage3, productImage4, productImage5, productImage6, productImage7, productImage8, productImage9, productImage10, productImage11, productImage12, productImage13, productImage14, productImage15]
 
 const StoreList= [
-    "STReRDiM1719220280607",
-    "STRw0YtB1719220300261",
-    "STR1iUHy1719220347089",
-    "STRRrxSz1719220361879",
-    "STRtawTR1719220553940",
-    "STRAlXUf1719220638878",
-    "STRQh1vr1719220655150",
-    "STRlovv91719220668616",
-    "STRVDZEc1719220701397",
-    "STR0bO0c1719220717806",
-    "STRQlM651719220731334",
-    "STRno3th1719220776404",
-    "STRr2OVv1719220847696",
-    "STRcjdcC1719220864283",
-    "STRXx7tj1719220891373"
+    "STRFhvKY1719466779817",
+    "STRcVhAw1719466779818",
+    "STRIYfHU1719466779819",
+    "STR1H7Rp1719466779820",
+    "STRu4PqG1719466779820",
+    "STRQK1iZ1719466779822",
+    "STRZV33W1719466779822",
+    "STRhfDTL1719466779823",
+    "STROCZTo1719466779824",
+    "STR357tY1719466779824",
+    "STRmB4bR1719466779825",
+    "STR7VyBW1719466779825",
+    "STRnCVIK1719466779825",
+    "STRkuWvR1719466779826",
+    "STRM8GJ01719466779826"
 ]
 
 const StoreImagesObj = {}

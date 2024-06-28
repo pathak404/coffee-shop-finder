@@ -27,8 +27,6 @@ const createOrder = async (req, res) => {
     })
     const amount = orderItems.reduce((total, item) => total + item.price * item.quantity, 0) + shippingCharge
 
-    console.log("order items: ", orderItems)
-
     const orderId = Order.createOrderId()
     const order = new Order({
       userId: req.userId,

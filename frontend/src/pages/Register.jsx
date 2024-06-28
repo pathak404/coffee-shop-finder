@@ -6,13 +6,13 @@ import FormButton from '../components/FormButton'
 import AuthContext from '../context/AuthContext'
 import useFetch from '../hooks/useFetch'
 import { toast } from 'react-toastify'
-import { FiLock, FiAtSign, FiUser } from "react-icons/fi"
+import { FiLock, FiPhone, FiUser } from "react-icons/fi"
 const Register = () => {
     const { login } = useContext(AuthContext)
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
       name: "",
-      email: "",
+      phone: "",
       password: "",
       confirmPassword: "",
     })
@@ -32,6 +32,8 @@ const Register = () => {
     }, [data])
   
     const inputHandler = (e) => {
+      if(e.target.name === "phone" && isNaN(e.target.value)) return;
+      if(e.target.name === "phone" && e.target.value.length > 10) return;
       setFormData({
         ...formData,
         [e.target.name]: e.target.value
@@ -58,7 +60,7 @@ const Register = () => {
                     <h1 className="block text-2xl md:text-4xl font-bold ms-1 text-center mb-10 mt-7 md:mt-0 leading-relaxed">Welcome to <br />Coffee Shop finder app</h1>
                     <form className="max-w-sm mx-auto" onSubmit={formHandler}>
                         <InputGroup icon={<FiUser className='w-5 h-5'/>} type={"text"} name={"name"} placeholder={"Enter your name"} handler={inputHandler} value={formData.name} />
-                        <InputGroup icon={<FiAtSign className='w-5 h-5'/>} type={"email"} name={"email"} placeholder={"Enter your email"} handler={inputHandler} value={formData.email} />
+                        <InputGroup icon={<FiPhone className='w-5 h-5'/>} type={"number"} name={"phone"} placeholder={"Enter phone number"} handler={inputHandler} value={formData.phone} />
                         <InputGroup icon={<FiLock className='w-5 h-5'/>} type={"password"} name={"password"} placeholder={"Create password"} handler={inputHandler} value={formData.password} />
                         <InputGroup icon={<FiLock className='w-5 h-5'/>} type={"password"} name={"confirmPassword"} placeholder={"Reenter the password"} handler={inputHandler} value={formData.confirmPassword} />
                         <FormButton loading={false} arrow={true}>Create account</FormButton>

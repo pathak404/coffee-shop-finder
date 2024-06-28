@@ -6,13 +6,13 @@ import FormButton from '../components/FormButton'
 import AuthContext from '../context/AuthContext'
 import useFetch from '../hooks/useFetch'
 import { toast } from 'react-toastify'
-import { FiLock, FiAtSign  } from "react-icons/fi"
+import { FiLock, FiPhone } from "react-icons/fi"
 
 const Login = () => {
     const { login } = useContext(AuthContext)
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
-      email: "",
+      phone: "",
       password: ""
     })
   
@@ -31,6 +31,8 @@ const Login = () => {
     }, [data])
   
     const inputHandler = (e) => {
+      if(e.target.name === "phone" && isNaN(e.target.value)) return;
+      if(e.target.name === "phone" && e.target.value.length > 10) return;
       setFormData({
         ...formData,
         [e.target.name]: e.target.value
@@ -52,8 +54,8 @@ const Login = () => {
                 <div className="text-center h-full overflow-y-scroll md:overflow-hidden px-4">
                     <h1 className="block text-2xl md:text-4xl font-bold ms-1 text-center mb-10 mt-7 md:mt-0 leading-relaxed">Welcome to <br />Coffee Shop finder app</h1>
                     <form className="max-w-sm mx-auto" onSubmit={formHandler}>
-                        <InputGroup icon={<FiAtSign className='w-5 h-5'/>} type={"email"} name={"email"} placeholder={"Enter your email"} handler={inputHandler} value={formData.email} />
-                        <InputGroup icon={<FiLock className='w-5 h-5'/>} type={"password"} name={"password"} placeholder={"Enter your password"} handler={inputHandler} value={formData.password} />
+                        <InputGroup icon={<FiPhone className='w-5 h-5'/>} type={"number"} name={"phone"} placeholder={"Enter phone number"} handler={inputHandler} value={formData.phone} />
+                        <InputGroup icon={<FiLock className='w-5 h-5'/>} type={"password"} name={"password"} placeholder={"Enter the password"} handler={inputHandler} value={formData.password} />
                         <FormButton loading={loading} arrow={true}>Continue to login</FormButton>
                     </form>
                     <div className="mx-auto grid place-items-center mt-4">

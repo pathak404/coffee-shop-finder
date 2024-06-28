@@ -10,6 +10,10 @@ const ProtectedPage = ({children, layout=1}) => {
         }
     }, [isAuth])
 
+    useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [])
+
     if(layout === 2) {
       return (
         <div className="w-full h-auto bg-white md:bg-transparent">

@@ -8,6 +8,9 @@ import ItemCard from '../../components/ItemCard'
 import ItemImages from "../../components/ItemImages"
 import AuthContext from '../../context/AuthContext'
 import useDebounce from '../../hooks/useDebounce'
+import NoData from '../../components/NoData'
+import Loading from '../../components/Loading'
+
 
 const Store = () => {
   const { storeId } = useParams()
@@ -16,16 +19,16 @@ const Store = () => {
   const [items, setItems] = useState([])
   const [filteredItems, setFilteredItems] = useState([])
   const { data, fetch } = useFetch({ path: `/store/${storeId}` })
-  const { data:itemsData, fetch:fetchItems } = useFetch({ path: `/store/${storeId}/items` })
+  const { loading, data:itemsData, fetch:fetchItems } = useFetch({ path: `/store/${storeId}/items` })
   const [activeTab, setActiveTab] = useState('coffee')
+  const [delayedLoading, setDelayedLoading] = useState(true)
 
   const [cart, setCart] = useState([])
   const {updateTotalCart} = useContext(AuthContext)
   const { data:cartData, fetch:fetchCart } = useFetch({ path: `/cart` })
-  const { fetch:fetchAddCart } = useFetch({ path: `/cart`, method: 'POST', isNotify: true})
   const isUpdatingCart = useRef(false)
   const prevCartRef = useRef([]);
-
+  const lottieRef = useRef(null)
 
   useEffect(() => {
     fetch()
@@ -43,7 +46,7 @@ const Store = () => {
   useEffect(() => {
     if (itemsData) {
       setItems(itemsData)
-      setFilteredItems(itemsData.filter(item => item.category === 'coffee'))
+      setFilteredItems(itemsData.filter(item => item.category === activeTab))
     }
   }, [itemsData])
 
@@ -54,9 +57,20 @@ const Store = () => {
     }
   }, [cartData])
 
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        setDelayedLoading(false)
+      }, 200)
+    }
+  }, [loading])
+
   const handleTabChange = useCallback((tab) => {
     setActiveTab(tab)
     setFilteredItems(items.filter(item => item.category === tab))
+    if(lottieRef.current) {
+      lottieRef.current.playSegments([0, 52], true)
+    }
   }, [setActiveTab, items])
 
 
@@ -64,7 +78,8 @@ const Store = () => {
     try {
       if (isUpdatingCart.current) return
       isUpdatingCart.current = true
-      fetchAddCart({
+      fetchCart({
+        customMethod: 'POST',
         customBody: { itemId, quantity: action === 'remove' ? 0 : 1, storeId }
       })
       setCart(prevCart => {
@@ -91,8 +106,8 @@ const Store = () => {
 
 
   const updateTotalCartDebounced = useDebounce((totalItems) => {
-    updateTotalCart(totalItems);
-  }, 300);
+    updateTotalCart(totalItems)
+  }, 400);
 
   useEffect(() => {
     if (prevCartRef.current.length !== cart.length) {
@@ -100,6 +115,12 @@ const Store = () => {
       prevCartRef.current = cart;
     }
   }, [cart, updateTotalCartDebounced])
+
+  useEffect(() => {
+    if(!delayedLoading && items?.length === 0 && lottieRef.current) {
+      lottieRef.current.playSegments([0, 52], true)
+    }
+  }, [activeTab, loading, items])
 
   
   return (
@@ -118,7 +139,15 @@ const Store = () => {
             </div>
             <StoreTab activeTab={activeTab} handleTabChange={handleTabChange} />
             <div className="flex flex-col justify-center gap-5 mt-7">
-              {filteredItems.map((item, index) => 
+              {delayedLoading ? 
+              <Loading className='mt-3 md:min-h-[300px] w-full' /> : 
+              items.length === 0 ? 
+              <NoData 
+              textClassNames={"md:text-xl"}
+              containerClassNames={"px-3 mt-3 md:min-h-[300px]"}
+              text='Go to home page and click on first store card.'
+              /> : 
+              filteredItems.map((item, index) => 
               <ItemCard 
               key={index} 
               {...item} 
@@ -134,7 +163,7 @@ const Store = () => {
 
       <div className="w-full md:w-1/2 order-1 h-56 fixed md:relative top-0 md:h-screen">
         <div className="bg-white rounded-md p-1 md:p-2 absolute top-4 left-4 cursor-pointer" onClick={() => navigate("/")}>
-          <FiChevronLeft className="text-lagoon-blue text-xl md:text-2xl" />
+          <FiChevronLeft className="text-lagoon-blue text-2xl" />
         </div>
         <img
           src={storesImg[storeId] ? storesImg[storeId] : storesImg[0]}

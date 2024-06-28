@@ -1,17 +1,18 @@
 import React, { useCallback, useEffect, useState } from 'react'
-import userImg from "../../assets/images/user.png"
 import InputGroup from '../../components/InputGroup'
 import { FiSearch } from 'react-icons/fi'
 import Filter from '../../components/Filter'
 import useFetch from '../../hooks/useFetch'
 import Stores from '../../components/Stores'
+import Loading from '../../components/Loading'
 
 
 const Home = () => {
-  const { data, fetch } = useFetch({
+  const { loading, data, fetch } = useFetch({
     path: "/stores",
     method: "GET",
   })
+  const [delayedLoading, setDelayedLoading] = useState(true)
 
   const [finalData, setFinalData] = useState([])
 
@@ -24,6 +25,14 @@ const Home = () => {
       setFinalData(data)
     }
   }, [data])
+
+  useEffect(() => {
+    if (!loading) {
+      setTimeout(() => {
+        setDelayedLoading(false)
+      }, 400)
+    }
+  }, [loading])
 
   const handleFilter = useCallback((criteria) => {
     const filtered = data.filter(item =>
@@ -66,9 +75,9 @@ const Home = () => {
 
 
   return (
-    <div className='w-full px-3 pt-16 md:pt-8 md:ps-10 h-full flex flex-col items-start justify-between'>
+    <div className='w-full px-4 pt-16 md:pt-8 md:ps-10 h-full flex flex-col items-start justify-between'>
       <div className="absolute top-8 right-6 md:hidden">
-        <img src={userImg} className='w-12 h-12 rounded-full' alt="user profile" />
+        <img src="/logo.svg" className='w-12 h-12' alt="user profile" />
       </div>
       <div className="mt-5">
         <h1 className='text-3xl md:text-5xl font-semibold'>Find a coffee shop anywhere</h1>
@@ -88,9 +97,8 @@ const Home = () => {
           <Filter onFilter={handleFilter} onSort={handleSort} />
         </div>
       </div>
-
-      <Stores stores={finalData} />
-
+      {delayedLoading ? <Loading className='w-full bg-white min-h-[343px] md:min-h-[563px] rounded-3xl md:mt-10' /> :
+      <Stores stores={finalData} />}
     </div>
   )
 }
