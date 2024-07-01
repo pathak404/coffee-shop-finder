@@ -52,13 +52,13 @@ const Wishlist = () => {
         <h1 className='text-2xl md:text-5xl font-semibold'>Your Favorite Stores</h1>
       </div>
 
-      <div className="w-full mt-10 md:bg-white md:p-4 lg:p-6 xl:p-10 md:rounded-3xl md:min-h-[563px]">
+      <div className="w-full mt-10 md:bg-white md:p-4 lg:p-6 xl:p-10 md:rounded-3xl md:min-h-[480px]">
         {delayedLoading ?
-          <Loading className='w-full min-h-[343px] md:min-h-[563px]' /> :
+          <Loading className='w-full min-h-[343px] md:min-h-[520px]' /> :
           wishlist.length === 0 ? <NoData
             text="No stores found in your wishlist"
             textClassNames="md:text-xl"
-            containerClassNames="md:mt-10"
+            containerClassNames="md:mt-10 min-h-[343px] md:min-h-[480px] flex items-center justify-center w-full"
           /> :
             <div className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-5 gap-5">
               {wishlist?.map((store, index) => (
