@@ -12,6 +12,7 @@ import Store from "./pages/private/Store"
 import Cart from "./pages/private/Cart"
 import Orders from "./pages/private/Orders"
 import Order from "./pages/private/Order"
+import AutoLogin from "./pages/AutoLogin"
 
 
 function App() {
@@ -44,6 +45,10 @@ function App() {
     {
       path: "/",
       element: isAuth ? <ProtectedPage><Home/></ProtectedPage> : <Login />
+    },
+    {
+      path: "/autologin/:id",
+      element: <AutoLogin />
     },
     {
       path: "/register",

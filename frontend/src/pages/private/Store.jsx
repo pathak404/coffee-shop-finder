@@ -58,10 +58,10 @@ const Store = () => {
   }, [cartData])
 
   useEffect(() => {
-    if (!loading) {
+    if (loading === false) {
       setTimeout(() => {
         setDelayedLoading(false)
-      }, 200)
+      }, 500)
     }
   }, [loading])
 

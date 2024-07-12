@@ -34,7 +34,7 @@ const Cart = () => {
         if (!loading) {
             setTimeout(() => {
                 setDelayedLoading(false)
-            }, 400)
+            }, 500)
         }
     }, [loading])
 
